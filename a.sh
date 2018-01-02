@@ -31,24 +31,7 @@ EOF
 
 
 #crontab
-chown root:root /etc/crontab
-chmod og-rwx /etc/crontab
-chown root:root /etc/cron.hourly
-chmod og-rwx /etc/cron.hourly
-chown root:root /etc/cron.daily
-chmod og-rwx /etc/cron.daily
-chown root:root /etc/cron.weekly
-chmod og-rwx /etc/cron.weekly
-chown root:root /etc/cron.monthly
-chmod og-rwx /etc/cron.monthly
-
-chown root:root /etc/cron.d
-chmod og-rwx /etc/cron.d
-rm /etc/cron.deny
-rm /etc/at.deny
-touch /etc/cron.allow
-touch /etc/at.allow
-chmod og-rwx /etc/cron.allow
-chmod og-rwx /etc/at.allow
-chown root:root /etc/cron.allow
-chown root:root /etc/at.allow
+[ -f /etc/cron.allow ] || touch /etc/cron.allow
+[ -f /etc/at.allow ] || touch /etc/at.allow
+chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
+chmod og-rwx /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
