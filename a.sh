@@ -8,7 +8,7 @@ grep -qF "/var/log/cmdlog.log" /etc/rsyslog.conf || echo \
 "local6.debug                /var/log/cmdlog.log" >> /etc/rsyslog.conf
 
 service rsyslog restart
-chmod 644 /var/log/cmdlog.log
+chmod 644 /var/log/cmdlog.log 2>dev/null
 
 cat > /etc/logrotate.d/cmdlog << EOF
 /var/log/cmdlog.log {
