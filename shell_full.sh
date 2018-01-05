@@ -1,12 +1,12 @@
 #!/bin/bash
 
 #password
-grep -qF "minlen" /etc/pam.d/system-auth || echo \
-"password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/system-auth
-grep -qF "minlen" /etc/pam.d/password-auth || echo \
-"password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/password-auth
-sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
-authconfig --update
+#grep -qF "minlen" /etc/pam.d/system-auth || echo \
+#"password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/system-auth
+#grep -qF "minlen" /etc/pam.d/password-auth || echo \
+#"password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/password-auth
+#sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
+#authconfig --update
 
 
 #cmdlog
