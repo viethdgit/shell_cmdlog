@@ -1,13 +1,5 @@
 #!/bin/bash
 
-#password
-#grep -q "^minlen" /etc/security/pwquality.conf || echo 'minlen=14' >> /etc/security/pwquality.conf
-#grep -q "^dcredit" /etc/security/pwquality.conf || echo 'dcredit=-1' >> /etc/security/pwquality.conf
-#grep -q "^lcredit" /etc/security/pwquality.conf || echo 'lcredit=-1' >> /etc/security/pwquality.conf
-#grep -q "^ocredit" /etc/security/pwquality.conf || echo 'ocredit=-1' >> /etc/security/pwquality.conf
-#grep -q "^ucredit" /etc/security/pwquality.conf || echo 'ucredit=-1' >> /etc/security/pwquality.conf
-#sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
-
 #cmdlog
 grep -qF "PROMPT_COMMAND='RETRN_VAL=\$?;logger" /etc/bashrc || echo \
 'export PROMPT_COMMAND='\''RETRN_VAL=$?;logger -p local6.debug "[$(echo $SSH_CLIENT | cut -d" " -f1)] # $(history 1 | sed "s/^[ ]*[0-9]\+[ ]*//" )"'\''' >> /etc/bashrc
