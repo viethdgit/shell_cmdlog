@@ -5,7 +5,9 @@ grep -qF "minlen" /etc/pam.d/system-auth || echo \
 "password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/system-auth
 grep -qF "minlen" /etc/pam.d/password-auth || echo \
 "password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/password-auth
+sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
 authconfig --update
+
 
 #cmdlog
 grep -qF "PROMPT_COMMAND='RETRN_VAL=\$?;logger" /etc/bashrc || echo \
@@ -33,7 +35,9 @@ EOF
 #SSH
 grep -q "^ClientAliveInterval" /etc/ssh/sshd_config || echo 'ClientAliveInterval 300' >> /etc/ssh/sshd_config
 grep -q "^ClientAliveCountMax" /etc/ssh/sshd_config || echo 'ClientAliveCountMax 0' >> /etc/ssh/sshd_config
+## sed -i -e 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
 ## grep -q "^PermitRootLogin" /etc/ssh/sshd_config || echo 'PermitRootLogin no' >> /etc/ssh/sshd_config
+
 service sshd reload
 
 
