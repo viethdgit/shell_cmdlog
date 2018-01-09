@@ -1,6 +1,8 @@
 #!/bin/bash
 
-#password
+#checklist 1:16
+
+#password 4:7
 P='/etc/pam.d/system-auth-ac'
 grep -qF "minlen" $P || sed -i \
 "s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
@@ -14,6 +16,8 @@ grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.s
 sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
 
 authconfig --update
+
+#filewall
 
 #cmdlog
 grep -qF "PROMPT_COMMAND='RETRN_VAL=\$?;logger" /etc/bashrc || echo \
@@ -38,7 +42,7 @@ cat > /etc/logrotate.d/cmdlog << EOF
 }
 EOF
 
-#SSH
+#SSH 13
 echo $'\n' >> /etc/ssh/sshd_config
 grep -q "^ClientAliveInterval" /etc/ssh/sshd_config || echo 'ClientAliveInterval 300' >> /etc/ssh/sshd_config
 grep -q "^ClientAliveCountMax" /etc/ssh/sshd_config || echo 'ClientAliveCountMax 0' >> /etc/ssh/sshd_config
@@ -47,8 +51,7 @@ grep -q "^ClientAliveCountMax" /etc/ssh/sshd_config || echo 'ClientAliveCountMax
 
 service sshd reload
 
-
-#crontab
+#crontab 16
 [ -f /etc/cron.allow ] || touch /etc/cron.allow
 [ -f /etc/at.allow ] || touch /etc/at.allow
 chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
