@@ -1,13 +1,19 @@
 #!/bin/bash
 
 #password
-#grep -qF "minlen" /etc/pam.d/system-auth || echo \
-#"password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/system-auth
-#grep -qF "minlen" /etc/pam.d/password-auth || echo \
-#"password    requisite    pam_cracklib.so try_first_pass retry=3 local_users_only minlen=14 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1" >> /etc/pam.d/password-auth
-#sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
-#authconfig --update
+P='/etc/pam.d/system-auth-ac'
+grep -qF "minlen" $P || sed -i \
+"s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
+grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
 
+P='/etc/pam.d/password-auth-ac'
+grep -qF "minlen" $P || sed -i \
+"s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
+grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
+
+sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
+
+authconfig --update
 
 #cmdlog
 grep -qF "PROMPT_COMMAND='RETRN_VAL=\$?;logger" /etc/bashrc || echo \
@@ -33,6 +39,7 @@ cat > /etc/logrotate.d/cmdlog << EOF
 EOF
 
 #SSH
+echo $'\n' >> /etc/ssh/sshd_config
 grep -q "^ClientAliveInterval" /etc/ssh/sshd_config || echo 'ClientAliveInterval 300' >> /etc/ssh/sshd_config
 grep -q "^ClientAliveCountMax" /etc/ssh/sshd_config || echo 'ClientAliveCountMax 0' >> /etc/ssh/sshd_config
 ## sed -i -e 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
