@@ -5,7 +5,8 @@ chmod +x shell_cmdlog_cron/a.sh
 sudo shell_cmdlog_cron/a.sh
 ```
 
------
+------
+------
 
 ```
 chmod +x shell_cmdlog_cron/shell_full.sh
