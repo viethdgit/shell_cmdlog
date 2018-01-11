@@ -1,6 +1,41 @@
 #!/bin/bash
 
 #checklist 1:16
+#backupfile
+N_DIR=backup_files_$(date +"%m_%d_%Y")
+mkdir $N_DIR
+touch $N_DIR/__note__.txt
+echo $'\n' >> $N_DIR/__note__.txt
+echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] to /$N_DIR"
+echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] to /$N_DIR" >> $N_DIR/__note__.txt
+cp /etc/pam.d/system-auth-ac $N_DIR
+cp /etc/pam.d/password-auth-ac $N_DIR
+
+echo "Copy file [/etc/login.defs] to /$N_DIR"
+echo "Copy file [/etc/login.defs] to /$N_DIR" >> $N_DIR/__note__.txt
+cp /etc/login.defs $N_DIR
+
+echo "Copy file [/etc/ssh/sshd_config] to /$N_DIR"
+echo "Copy file [/etc/ssh/sshd_config] to /$N_DIR" >> $N_DIR/__note__.txt
+cp /etc/ssh/sshd_config $N_DIR
+
+echo "Copy file [/etc/cron.allow] [/etc/at.allow] to /$N_DIR" 
+echo "Copy file [/etc/cron.allow] [/etc/at.allow] to /$N_DIR" >> $N_DIR/__note__.txt
+cp /etc/cron.allow $N_DIR 2> /dev/null
+cp /etc/at.allow $N_DIR 2> /dev/null
+
+cat >> $N_DIR/__note__.txt << EOF
+
+#### Backup
+cd $N_DIR
+cp -Rf system-auth-ac /etc/pam.d/system-auth-ac
+cp -Rf password-auth-ac /etc/pam.d/password-auth-ac
+cp -Rf login.defs /etc/login.defs
+cp -Rf sshd_config /etc/ssh/sshd_config
+cp -Rf cron.allow /etc/cron.allow
+cp -Rf at.allow /etc/at.allow
+
+EOF
 
 #password 4:7
 if grep -Fq "7" /etc/system-release
