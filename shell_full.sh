@@ -3,16 +3,30 @@
 #checklist 1:16
 
 #password 4:7
-P='/etc/pam.d/system-auth-ac'
-grep -qF "minlen" $P || sed -i \
-"s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
-grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
+if grep -Fq "7" /etc/system-release
+then
+	P='/etc/pam.d/system-auth-ac'
+	grep -qF "minlen" $P || sed -i \
+	"s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
+	grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
 
-P='/etc/pam.d/password-auth-ac'
-grep -qF "minlen" $P || sed -i \
-"s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
-grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
+	P='/etc/pam.d/password-auth-ac'
+	grep -qF "minlen" $P || sed -i \
+	"s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
+	grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
+elif grep -Fq "6" /etc/system-release
+then
+	P='/etc/pam.d/system-auth-ac'
+	grep -qF "minlen" $P || sed -i \
+	"s/$(egrep '^password\s+requisite\s+pam_cracklib.so' $P)/$(egrep '^password\s+requisite\s+pam_cracklib.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
+	grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
 
+	P='/etc/pam.d/password-auth-ac'
+	grep -qF "minlen" $P || sed -i \
+	"s/$(egrep '^password\s+requisite\s+pam_cracklib.so' $P)/$(egrep '^password\s+requisite\s+pam_cracklib.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
+	grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
+fi
+#----
 sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
 
 authconfig --update
