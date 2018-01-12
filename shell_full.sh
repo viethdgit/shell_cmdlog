@@ -29,12 +29,12 @@ cat >> $N_DIR/__note__.txt << EOF
 
 #### Backup
 cd $N_DIR
-cp -Rf system-auth-ac /etc/pam.d/system-auth-ac
-cp -Rf password-auth-ac /etc/pam.d/password-auth-ac
-cp -Rf login.defs /etc/login.defs
-cp -Rf sshd_config /etc/ssh/sshd_config
-cp -Rf cron.allow /etc/cron.allow
-cp -Rf at.allow /etc/at.allow
+cp system-auth-ac /etc/pam.d/system-auth-ac
+cp password-auth-ac /etc/pam.d/password-auth-ac
+cp login.defs /etc/login.defs
+cp sshd_config /etc/ssh/sshd_config
+cp cron.allow /etc/cron.allow
+cp at.allow /etc/at.allow
 
 #### Restart service
 authconfig --update
