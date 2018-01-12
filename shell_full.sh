@@ -36,6 +36,10 @@ cp -Rf sshd_config /etc/ssh/sshd_config
 cp -Rf cron.allow /etc/cron.allow
 cp -Rf at.allow /etc/at.allow
 
+#### Restart service
+authconfig --update
+service sshd reload
+service rsyslog restart
 EOF
 
 #password 4:7
