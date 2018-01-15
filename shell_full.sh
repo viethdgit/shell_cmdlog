@@ -3,7 +3,7 @@
 #checklist 1:16
 
 #backupfile
-N_DIR=backup_files_$(date +"%m_%d_%Y")
+N_DIR=backup_files_$(date +"%d_%m_%Y")
 mkdir $N_DIR
 touch $N_DIR/__note__.txt
 echo $'\n' >> $N_DIR/__note__.txt
@@ -119,3 +119,4 @@ rm /etc/cron.deny /etc/at.deny 2> /dev/null
 [ -f /etc/at.allow ] || touch /etc/at.allow
 chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
 chmod og-rwx /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
+chmod 600 /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
