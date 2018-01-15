@@ -21,10 +21,9 @@ echo "Copy file [/etc/ssh/sshd_config] to /$N_DIR"
 echo "Copy file [/etc/ssh/sshd_config] to /$N_DIR" >> $N_DIR/__note__.txt
 cp /etc/ssh/sshd_config $N_DIR
 
-echo "Copy file [/etc/cron.allow] [/etc/at.allow] to /$N_DIR" 
-echo "Copy file [/etc/cron.allow] [/etc/at.allow] to /$N_DIR" >> $N_DIR/__note__.txt
-cp /etc/cron.allow $N_DIR 2> /dev/null
-cp /etc/at.allow $N_DIR 2> /dev/null
+echo "Copy file [/etc/cron.allow] [/etc/at.allow] [/etc/cron.deny] [/etc/at.deny] to /$N_DIR" 
+echo "Copy file [/etc/cron.allow] [/etc/at.allow] [/etc/cron.deny] [/etc/at.deny] to /$N_DIR" >> $N_DIR/__note__.txt
+cp /etc/cron.allow /etc/at.allow /etc/cron.deny /etc/at.deny $N_DIR 2> /dev/null
 
 cat >> $N_DIR/__note__.txt << EOF
 
@@ -108,6 +107,7 @@ EOF
 echo $'\n' >> /etc/ssh/sshd_config
 grep -q "^ClientAliveInterval" /etc/ssh/sshd_config || echo 'ClientAliveInterval 300' >> /etc/ssh/sshd_config
 grep -q "^ClientAliveCountMax" /etc/ssh/sshd_config || echo 'ClientAliveCountMax 0' >> /etc/ssh/sshd_config
+## grep -q "^Protocol" /etc/ssh/sshd_config || echo 'Protocol 2' >> /etc/ssh/sshd_config
 ## sed -i -e 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
 ## grep -q "^PermitRootLogin" /etc/ssh/sshd_config || echo 'PermitRootLogin no' >> /etc/ssh/sshd_config
 
