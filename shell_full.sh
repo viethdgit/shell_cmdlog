@@ -7,10 +7,11 @@ N_DIR=backup_files_$(date +"%m_%d_%Y")
 mkdir $N_DIR
 touch $N_DIR/__note__.txt
 echo $'\n' >> $N_DIR/__note__.txt
-echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] to /$N_DIR"
-echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] to /$N_DIR" >> $N_DIR/__note__.txt
+echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] [/etc/security/pwquality.conf] to /$N_DIR"
+echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] [/etc/security/pwquality.conf] to /$N_DIR" >> $N_DIR/__note__.txt
 cp /etc/pam.d/system-auth-ac $N_DIR
 cp /etc/pam.d/password-auth-ac $N_DIR
+cp /etc/security/pwquality.conf $N_DIR
 
 echo "Copy file [/etc/login.defs] to /$N_DIR"
 echo "Copy file [/etc/login.defs] to /$N_DIR" >> $N_DIR/__note__.txt
@@ -31,6 +32,7 @@ cat >> $N_DIR/__note__.txt << EOF
 cd $N_DIR
 cp system-auth-ac /etc/pam.d/system-auth-ac
 cp password-auth-ac /etc/pam.d/password-auth-ac
+cp pwquality.conf /etc/security/pwquality.conf
 cp login.defs /etc/login.defs
 cp sshd_config /etc/ssh/sshd_config
 cp cron.allow /etc/cron.allow
@@ -54,6 +56,12 @@ then
 	grep -qF "minlen" $P || sed -i \
 	"s/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P)/$(egrep '^password\s+requisite\s+pam_pwquality.so' $P) minlen=8 dcredit=-1 ucredit=-1 ocredit=-1 lcredit=-1/g" $P
 	grep -qF "remember" $P || sed -i "s/$(egrep '^password\s+sufficient\s+pam_unix.so' $P)/$(egrep '^password\s+sufficient\s+pam_unix.so' $P) remember=5/g" $P
+	grep -q ^minlen /etc/security/pwquality.conf || echo "minlen=8" >> /etc/security/pwquality.conf
+	grep -q ^dcredit /etc/security/pwquality.conf || echo "dcredit=-1" >> /etc/security/pwquality.conf
+	grep -q ^ucredit /etc/security/pwquality.conf || echo "ucredit=-1" >> /etc/security/pwquality.conf
+	grep -q ^ocredit /etc/security/pwquality.conf || echo "ocredit=-1" >> /etc/security/pwquality.conf
+	grep -q ^lcredit /etc/security/pwquality.conf || echo "lcredit=-1" >> /etc/security/pwquality.conf
+	
 elif grep -Fq "6" /etc/system-release
 then
 	P='/etc/pam.d/system-auth-ac'
@@ -106,6 +114,7 @@ grep -q "^ClientAliveCountMax" /etc/ssh/sshd_config || echo 'ClientAliveCountMax
 service sshd reload
 
 #crontab 16
+rm /etc/cron.deny /etc/at.deny 2> /dev/null
 [ -f /etc/cron.allow ] || touch /etc/cron.allow
 [ -f /etc/at.allow ] || touch /etc/at.allow
 chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
