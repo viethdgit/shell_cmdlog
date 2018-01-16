@@ -116,8 +116,11 @@ grep -q "^Protocol" /etc/ssh/sshd_config || echo 'Protocol 2' >> /etc/ssh/sshd_c
 service sshd reload
 
 #crontab 16
-#rm /etc/cron.deny /etc/at.deny 2> /dev/null
-#[ -f /etc/cron.allow ] || touch /etc/cron.allow
-#[ -f /etc/at.allow ] || touch /etc/at.allow
-#chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
-#chmod og-rwx /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
+if [ -z "$(ls -A /var/spool/cron)" ]; then
+	echo 'ko co crontab'
+	rm /etc/cron.deny /etc/at.deny 2> /dev/null
+	[ -f /etc/cron.allow ] || touch /etc/cron.allow
+	[ -f /etc/at.allow ] || touch /etc/at.allow
+	chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
+	chmod og-rwx /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
+fi
