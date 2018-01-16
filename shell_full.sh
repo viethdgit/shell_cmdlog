@@ -11,7 +11,7 @@ echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] [/etc/
 echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] [/etc/security/pwquality.conf] to /$N_DIR" >> $N_DIR/__note__.txt
 cp /etc/pam.d/system-auth-ac $N_DIR
 cp /etc/pam.d/password-auth-ac $N_DIR
-cp /etc/security/pwquality.conf $N_DIR
+cp /etc/security/pwquality.conf $N_DIR 2> /dev/null
 
 echo "Copy file [/etc/login.defs] to /$N_DIR"
 echo "Copy file [/etc/login.defs] to /$N_DIR" >> $N_DIR/__note__.txt
@@ -36,6 +36,8 @@ cp login.defs /etc/login.defs
 cp sshd_config /etc/ssh/sshd_config
 cp cron.allow /etc/cron.allow
 cp at.allow /etc/at.allow
+cp cron.deny /etc/cron.deny 
+cp at.deny /etc/at.deny
 
 #### Restart service
 authconfig --update
@@ -114,9 +116,8 @@ grep -q "^Protocol" /etc/ssh/sshd_config || echo 'Protocol 2' >> /etc/ssh/sshd_c
 service sshd reload
 
 #crontab 16
-rm /etc/cron.deny /etc/at.deny 2> /dev/null
-[ -f /etc/cron.allow ] || touch /etc/cron.allow
-[ -f /etc/at.allow ] || touch /etc/at.allow
-chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
-chmod og-rwx /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
-chmod 600 /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
+#rm /etc/cron.deny /etc/at.deny 2> /dev/null
+#[ -f /etc/cron.allow ] || touch /etc/cron.allow
+#[ -f /etc/at.allow ] || touch /etc/at.allow
+#chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
+#chmod og-rwx /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
