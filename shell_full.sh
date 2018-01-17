@@ -24,6 +24,8 @@ cp /etc/ssh/sshd_config $N_DIR
 echo "Copy file [/etc/cron.allow] [/etc/at.allow] [/etc/cron.deny] [/etc/at.deny] to /$N_DIR" 
 echo "Copy file [/etc/cron.allow] [/etc/at.allow] [/etc/cron.deny] [/etc/at.deny] to /$N_DIR" >> $N_DIR/__note__.txt
 cp /etc/cron.allow /etc/at.allow /etc/cron.deny /etc/at.deny $N_DIR 2> /dev/null
+mkdir $N_DIR/crontab
+cp /var/spool/cron/* $N_DIR/crontab/
 
 cat >> $N_DIR/__note__.txt << EOF
 
@@ -34,8 +36,6 @@ cp password-auth-ac /etc/pam.d/password-auth-ac
 cp pwquality.conf /etc/security/pwquality.conf
 cp login.defs /etc/login.defs
 cp sshd_config /etc/ssh/sshd_config
-cp cron.allow /etc/cron.allow
-cp at.allow /etc/at.allow
 cp cron.deny /etc/cron.deny 
 cp at.deny /etc/at.deny
 
@@ -116,11 +116,12 @@ grep -q "^Protocol" /etc/ssh/sshd_config || echo 'Protocol 2' >> /etc/ssh/sshd_c
 service sshd reload
 
 #crontab 16
-if [ -z "$(ls -A /var/spool/cron)" ]; then
-	echo 'ko co crontab'
-	rm /etc/cron.deny /etc/at.deny 2> /dev/null
-	[ -f /etc/cron.allow ] || touch /etc/cron.allow
-	[ -f /etc/at.allow ] || touch /etc/at.allow
-	chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
-	chmod og-rwx /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
-fi
+
+#if [ -z "$(ls -A /var/spool/cron)" ]; then
+#	echo 'ko co crontab'
+#	rm /etc/cron.deny /etc/at.deny 2> /dev/null
+#	[ -f /etc/cron.allow ] || touch /etc/cron.allow
+#	[ -f /etc/at.allow ] || touch /etc/at.allow
+#	chown -R root:root /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow 
+#	chmod 600 /etc/crontab /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d /etc/cron.allow /etc/at.allow
+#fi
