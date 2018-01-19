@@ -25,7 +25,7 @@ echo "Copy file [/etc/cron.allow] [/etc/at.allow] [/etc/cron.deny] [/etc/at.deny
 echo "Copy file [/etc/cron.allow] [/etc/at.allow] [/etc/cron.deny] [/etc/at.deny] to /$N_DIR" >> $N_DIR/__note__.txt
 cp /etc/cron.allow /etc/at.allow /etc/cron.deny /etc/at.deny $N_DIR 2> /dev/null
 echo 'Backup Crontab to $N_DIR'
-mkdir $N_DIR/crontab
+mkdir $N_DIR/crontab 2> /dev/null
 cp /var/spool/cron/* $N_DIR/crontab/ 2> /dev/null
 
 cat >> $N_DIR/__note__.txt << EOF
