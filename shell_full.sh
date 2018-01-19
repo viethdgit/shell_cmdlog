@@ -4,8 +4,8 @@
 
 #backupfile
 N_DIR=backup_files_$(date +"%d_%m_%Y")
-mkdir $N_DIR
-touch $N_DIR/__note__.txt
+mkdir $N_DIR 2> /dev/null
+[ -f $N_DIR/__note__.txt ] || touch $N_DIR/__note__.txt
 echo $'\n' >> $N_DIR/__note__.txt
 echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] [/etc/security/pwquality.conf] to /$N_DIR"
 echo "Copy file [/etc/pam.d/system-auth-ac] [/etc/pam.d/password-auth-ac] [/etc/security/pwquality.conf] to /$N_DIR" >> $N_DIR/__note__.txt
