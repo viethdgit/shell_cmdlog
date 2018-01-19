@@ -47,7 +47,7 @@ service rsyslog restart
 EOF
 
 #password 4:7
-if grep -Fq "7" /etc/system-release
+if grep -Fq "7." /etc/system-release
 then
 	P='/etc/pam.d/system-auth-ac'
 	grep -qF "minlen" $P || sed -i \
@@ -64,7 +64,7 @@ then
 	grep -q ^ocredit /etc/security/pwquality.conf || echo "ocredit=-1" >> /etc/security/pwquality.conf
 	grep -q ^lcredit /etc/security/pwquality.conf || echo "lcredit=-1" >> /etc/security/pwquality.conf
 	
-elif grep -Fq "6" /etc/system-release
+elif grep -Fq "6." /etc/system-release
 then
 	P='/etc/pam.d/system-auth-ac'
 	grep -qF "minlen" $P || sed -i \
