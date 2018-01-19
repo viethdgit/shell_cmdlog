@@ -78,8 +78,7 @@ then
 fi
 #----
 sed -i -e 's/PASS_MAX_DAYS	99999/PASS_MAX_DAYS	90/g' /etc/login.defs
-
-authconfig --update
+#authconfig --update
 
 #filewall
 
